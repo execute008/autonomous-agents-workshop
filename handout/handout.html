@@ -2,168 +2,133 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Autonomous Agents Workshop — Handout</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  @page {
+    size: A4;
+    margin: 18mm 18mm 16mm 18mm;
+  }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 11pt;
-    line-height: 1.6;
+    font-size: 10.5pt;
+    line-height: 1.55;
     color: #1a1a2e;
     background: white;
   }
 
-  @page {
-    size: A4;
-    margin: 0;
-  }
+  /* ── Page breaks ── */
+  .page-break { break-before: page; page-break-before: always; }
 
-  .page {
-    width: 210mm;
-    margin: 0 auto;
-    padding: 18mm 18mm 20mm 18mm;
-    page-break-after: always;
-    position: relative;
-  }
-  .page:last-child { page-break-after: avoid; }
-
-  @media print {
-    body { background: white; }
-    .page { margin: 0; box-shadow: none; }
-  }
-
-  /* ── Prevent mid-element page breaks ── */
-  .two-col,
-  .three-col,
-  .skill-grid,
-  .col-card,
-  .mini-card,
-  .callout,
-  .highlight-box,
-  .link-item,
-  .links-grid,
-  .skill-card,
-  .product-card,
-  .flow,
-  pre {
+  /* ── Prevent splits inside elements ── */
+  .two-col, .three-col, .skill-grid, .col-card, .mini-card,
+  .callout, .highlight-box, .links-grid, .skill-card,
+  .product-card, .flow, pre, .compare-table, .section-block {
     break-inside: avoid;
     page-break-inside: avoid;
   }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+  .compare-table tr { break-inside: avoid; page-break-inside: avoid; }
 
-  h2 {
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-
-  h3 {
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-
-  /* Keep table rows together */
-  .compare-table tr {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* COVER */
+  /* ══════════════ COVER ══════════════ */
   .cover {
     background: linear-gradient(135deg, #0d0d1a 0%, #1a0a2e 40%, #0a1628 100%);
     color: white;
-    padding: 28mm 18mm 20mm;
-    height: 297mm;
+    padding: 24mm 0 20mm;
+    height: 257mm; /* 297 - 18 - 16 margins = 263, minus a bit */
     display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
     overflow: hidden;
+    margin: -18mm -18mm -16mm -18mm; /* bleed to page edges */
+    padding: 28mm 18mm 20mm;
+    break-after: page;
+    page-break-after: always;
   }
   .cover::before {
     content: '';
     position: absolute;
     top: -80px; right: -80px;
-    width: 400px; height: 400px;
+    width: 380px; height: 380px;
     background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
     border-radius: 50%;
+    pointer-events: none;
   }
   .cover-badge {
     display: inline-block;
     background: rgba(139,92,246,0.2);
     border: 1px solid rgba(139,92,246,0.5);
     color: #c4b5fd;
-    font-size: 8pt;
+    font-size: 7.5pt;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
     padding: 4px 12px;
     border-radius: 20px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     width: fit-content;
   }
   .cover h1 {
-    font-size: 36pt;
+    font-size: 34pt;
     font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 12px;
-    background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 100%);
+    line-height: 1.05;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff 0%, #c4b5fd 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   .cover-subtitle {
-    font-size: 14pt;
+    font-size: 13pt;
     color: #94a3b8;
-    margin-bottom: 48px;
+    margin-bottom: 36px;
     font-weight: 300;
   }
   .cover-products {
     display: flex;
-    gap: 20px;
-    margin-bottom: 48px;
-    position: relative;
-    z-index: 1;
+    gap: 16px;
+    margin-bottom: 36px;
   }
   .product-card {
     flex: 1;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 16px;
   }
   .product-card.openclaw { border-color: rgba(139,92,246,0.4); }
   .product-card.zeroclaw { border-color: rgba(59,130,246,0.4); }
-  .product-icon { font-size: 24pt; margin-bottom: 8px; }
-  .product-name { font-size: 13pt; font-weight: 700; color: white; margin-bottom: 4px; }
-  .product-tagline { font-size: 9pt; color: #94a3b8; }
+  .product-icon { font-size: 20pt; margin-bottom: 6px; }
+  .product-name { font-size: 12pt; font-weight: 700; margin-bottom: 3px; }
+  .product-tagline { font-size: 8.5pt; color: #94a3b8; line-height: 1.4; }
   .product-card.openclaw .product-name { color: #c4b5fd; }
   .product-card.zeroclaw .product-name { color: #93c5fd; }
   .cover-meta {
     display: flex;
-    gap: 32px;
-    font-size: 9pt;
+    gap: 28px;
+    font-size: 8.5pt;
     color: #64748b;
     border-top: 1px solid rgba(255,255,255,0.1);
-    padding-top: 24px;
-    position: relative;
-    z-index: 1;
+    padding-top: 20px;
   }
   .cover-meta span { color: #94a3b8; }
 
-  /* CONTENT */
-  .page-header {
+  /* ══════════════ SECTION HEADER ══════════════ */
+  .section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 2px solid #7c3aed;
-    padding-bottom: 8px;
-    margin-bottom: 18px;
+    padding-bottom: 7px;
+    margin-bottom: 14px;
   }
-  .page-title { font-size: 16pt; font-weight: 700; color: #1a1a2e; }
-  .page-number { font-size: 8pt; color: #94a3b8; font-weight: 500; }
+  .section-title { font-size: 15pt; font-weight: 700; color: #1a1a2e; }
+  .section-num { font-size: 8pt; color: #94a3b8; font-weight: 500; }
 
   .section-label {
     display: inline-block;
@@ -173,240 +138,220 @@
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    padding: 3px 8px;
+    padding: 2px 8px;
     border-radius: 4px;
     margin-bottom: 8px;
   }
 
+  /* ══════════════ TYPOGRAPHY ══════════════ */
   h2 {
-    font-size: 12pt;
+    font-size: 11.5pt;
     font-weight: 700;
     color: #1a1a2e;
-    margin: 14px 0 7px;
-    padding-left: 10px;
+    margin: 12px 0 6px;
+    padding-left: 9px;
     border-left: 3px solid #7c3aed;
   }
-  h3 { font-size: 10pt; font-weight: 600; color: #374151; margin: 10px 0 5px; }
-  p { margin-bottom: 7px; color: #374151; font-size: 10.5pt; }
-  ul, ol { padding-left: 18px; margin-bottom: 8px; color: #374151; font-size: 10.5pt; }
-  li { margin-bottom: 3px; }
+  h3 { font-size: 9.5pt; font-weight: 600; color: #374151; margin: 9px 0 4px; }
+  p { margin-bottom: 6px; color: #374151; }
+  ul, ol { padding-left: 17px; margin-bottom: 7px; color: #374151; }
+  li { margin-bottom: 2px; }
 
-  /* TABLE */
+  /* ══════════════ TABLE ══════════════ */
   .compare-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 10px 0;
-    font-size: 9pt;
+    margin: 8px 0;
+    font-size: 8.5pt;
   }
   .compare-table th {
     background: #1a1a2e;
     color: white;
-    padding: 7px 10px;
+    padding: 6px 9px;
     text-align: left;
     font-weight: 600;
-    font-size: 9pt;
   }
   .compare-table th:nth-child(2) { background: #5b21b6; }
   .compare-table th:nth-child(3) { background: #1e40af; }
   .compare-table td {
-    padding: 6px 10px;
+    padding: 5px 9px;
     border-bottom: 1px solid #e5e7eb;
     vertical-align: top;
-    font-size: 9pt;
+    font-size: 8.5pt;
   }
   .compare-table tr:nth-child(even) td { background: #f8fafc; }
   .check { color: #16a34a; font-weight: 700; }
-  .partial { color: #d97706; }
 
-  /* CODE */
+  /* ══════════════ CODE ══════════════ */
   pre {
     background: #0d0d1a;
     color: #e2e8f0;
-    padding: 10px 14px;
-    border-radius: 8px;
+    padding: 9px 13px;
+    border-radius: 7px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8pt;
-    margin: 8px 0;
+    font-size: 7.5pt;
+    margin: 7px 0;
     border-left: 3px solid #7c3aed;
     white-space: pre-wrap;
     word-break: break-all;
+    line-height: 1.5;
   }
   code {
     font-family: 'JetBrains Mono', monospace;
     background: #f1f5f9;
     color: #7c3aed;
-    padding: 1px 5px;
+    padding: 1px 4px;
     border-radius: 3px;
-    font-size: 8.5pt;
+    font-size: 8pt;
   }
 
-  /* CALLOUTS */
+  /* ══════════════ CALLOUTS ══════════════ */
   .callout {
-    border-radius: 8px;
-    padding: 9px 13px;
-    margin: 9px 0;
-    font-size: 9.5pt;
-  }
-  .callout-info { background: #eff6ff; border-left: 3px solid #3b82f6; color: #1e3a5f; }
-  .callout-tip { background: #f0fdf4; border-left: 3px solid #16a34a; color: #14532d; }
-  .callout-warning { background: #fffbeb; border-left: 3px solid #d97706; color: #78350f; }
-  .callout strong { display: block; margin-bottom: 2px; }
-
-  /* GRID */
-  .skill-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    border-radius: 7px;
+    padding: 8px 12px;
     margin: 8px 0;
-  }
-  .skill-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 8px 11px;
     font-size: 9pt;
   }
-  .skill-card-name { font-weight: 700; color: #7c3aed; margin-bottom: 2px; font-size: 9.5pt; }
+  .callout-info  { background: #eff6ff; border-left: 3px solid #3b82f6; color: #1e3a5f; }
+  .callout-tip   { background: #f0fdf4; border-left: 3px solid #16a34a; color: #14532d; }
+  .callout-warn  { background: #fffbeb; border-left: 3px solid #d97706; color: #78350f; }
+  .callout strong { display: block; margin-bottom: 2px; }
 
+  /* ══════════════ GRIDS ══════════════ */
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin: 10px 0;
+    gap: 12px;
+    margin: 9px 0;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 9px;
+    margin: 9px 0;
+  }
+  .skill-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin: 7px 0;
   }
   .col-card {
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 9.5pt;
+    border-radius: 7px;
+    padding: 11px;
+    font-size: 9pt;
   }
   .col-card.purple { background: linear-gradient(135deg,#f5f3ff,#ede9fe); border: 1px solid #c4b5fd; }
-  .col-card.blue { background: linear-gradient(135deg,#eff6ff,#dbeafe); border: 1px solid #93c5fd; }
+  .col-card.blue   { background: linear-gradient(135deg,#eff6ff,#dbeafe); border: 1px solid #93c5fd; }
   .col-card h3 { color: #1a1a2e; margin-top: 0; }
+  .skill-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-size: 8.5pt;
+  }
+  .skill-card-name { font-weight: 700; color: #7c3aed; margin-bottom: 1px; font-size: 9pt; }
+  .mini-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    padding: 9px;
+    font-size: 8.5pt;
+  }
+  .mini-card-title { font-weight: 700; font-size: 8.5pt; color: #1a1a2e; margin-bottom: 4px; }
 
-  /* FLOW */
+  /* ══════════════ FLOW ══════════════ */
   .flow {
     display: flex;
     align-items: center;
     gap: 5px;
-    margin: 10px 0;
+    margin: 9px 0;
     flex-wrap: wrap;
   }
   .flow-step {
     background: #7c3aed;
     color: white;
-    padding: 5px 10px;
+    padding: 5px 9px;
     border-radius: 6px;
-    font-size: 8pt;
+    font-size: 7.5pt;
     font-weight: 600;
-    white-space: nowrap;
     text-align: center;
     line-height: 1.3;
   }
-  .flow-arrow { color: #94a3b8; font-size: 12pt; }
+  .flow-arrow { color: #94a3b8; font-size: 11pt; }
 
-  /* HIGHLIGHT */
+  /* ══════════════ HIGHLIGHT ══════════════ */
   .highlight-box {
     background: linear-gradient(135deg, #1a1a2e, #2d1b69);
     color: white;
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin: 10px 0;
+    border-radius: 9px;
+    padding: 12px 15px;
+    margin: 9px 0;
   }
   .highlight-box h3 { color: #c4b5fd; margin-top: 0; }
-  .highlight-box p, .highlight-box li { color: #cbd5e1; font-size: 9.5pt; }
+  .highlight-box p, .highlight-box li { color: #cbd5e1; font-size: 9pt; }
   .highlight-box pre { background: rgba(0,0,0,0.3); border-left-color: #c4b5fd; }
 
-  /* LINKS */
+  /* ══════════════ LINKS ══════════════ */
   .links-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin: 10px 0;
+    gap: 7px;
+    margin: 9px 0;
   }
   .link-item {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 9px 11px;
+    border-radius: 7px;
+    padding: 8px 10px;
   }
   .link-label {
     font-weight: 700;
-    font-size: 7.5pt;
+    font-size: 7pt;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #64748b;
     margin-bottom: 2px;
   }
-  .url { color: #7c3aed; font-weight: 600; font-size: 9pt; word-break: break-all; }
+  .url { color: #7c3aed; font-weight: 600; font-size: 8.5pt; word-break: break-all; }
 
-  /* TAG BADGES */
-  .badge {
-    display: inline-block;
-    padding: 2px 7px;
-    border-radius: 10px;
-    font-size: 7.5pt;
-    font-weight: 700;
-    margin-left: 4px;
-    vertical-align: middle;
-  }
-  .badge-rust { background: #fef3c7; color: #92400e; }
-  .badge-node { background: #dcfce7; color: #166534; }
-  .badge-local { background: #ede9fe; color: #5b21b6; }
-  .badge-cloud { background: #dbeafe; color: #1e40af; }
-  .badge-both { background: #f0fdf4; color: #15803d; }
-
-  /* FOOTER */
+  /* ══════════════ FOOTER ══════════════ */
   .page-footer {
     display: flex;
     justify-content: space-between;
-    font-size: 7.5pt;
+    font-size: 7pt;
     color: #94a3b8;
     border-top: 1px solid #e5e7eb;
-    padding-top: 6px;
-    margin-top: 18px;
+    padding-top: 5px;
+    margin-top: 14px;
   }
-
-  /* THREE COL */
-  .three-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    margin: 10px 0;
-  }
-  .mini-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 8.5pt;
-  }
-  .mini-card-title { font-weight: 700; font-size: 9pt; color: #1a1a2e; margin-bottom: 4px; }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════ COVER ══════════════════ -->
+<!-- ══════════════════════════════════════════════
+     COVER — full bleed, page break after
+══════════════════════════════════════════════ -->
 <div class="cover">
   <div class="cover-badge">Workshop Handout</div>
   <h1>Autonomous<br>Agents</h1>
   <div class="cover-subtitle">
     OpenClaw &amp; ZeroClaw — Hands-On für Entwickler<br>
-    <em style="font-size:10pt;opacity:0.7">OpenClaw &amp; ZeroClaw — Developer Hands-On Guide</em>
+    <em style="font-size:10pt;opacity:0.65">OpenClaw &amp; ZeroClaw — Developer Hands-On Guide</em>
   </div>
-
   <div class="cover-products">
     <div class="product-card openclaw">
       <div class="product-icon">🐾</div>
       <div class="product-name">OpenClaw</div>
-      <div class="product-tagline">Node.js · Cloud-Modelle · Multi-Agent Gateway<br>Läuft lokal oder in der Cloud</div>
+      <div class="product-tagline">Node.js · Semantic Memory · Multi-Agent Gateway<br>Lokal oder in der Cloud</div>
     </div>
     <div class="product-card zeroclaw">
       <div class="product-icon">🦀</div>
       <div class="product-name">ZeroClaw</div>
-      <div class="product-tagline">Rust · 3MB Binary · 65 Provider · Hardware-Support<br>Läuft lokal oder in der Cloud</div>
+      <div class="product-tagline">Rust · 3MB Binary · 65 Provider · Hardware-Support<br>Lokal oder in der Cloud</div>
     </div>
   </div>
-
   <div class="cover-meta">
     <div>📅 <span>2026</span></div>
     <div>👤 <span>Oskar · execute008</span></div>
@@ -414,213 +359,162 @@
   </div>
 </div>
 
-<!-- ══════════════════ PAGE 2: Agent Basics ══════════════════ -->
-<div class="page">
-  <div class="page-header">
-    <div class="page-title">Was ist ein autonomer Agent?</div>
-    <div class="page-number">01</div>
+<!-- ══════════════════════════════════════════════
+     01 — Was ist ein autonomer Agent?
+══════════════════════════════════════════════ -->
+<div class="section-header">
+  <div class="section-title">Was ist ein autonomer Agent?</div>
+  <div class="section-num">01</div>
+</div>
+<div class="section-label">Grundlagen / Basics</div>
+
+<p>Ein <strong>autonomer Agent</strong> ist ein KI-System, das nicht nur antwortet — es <em>handelt</em>. Es kann Werkzeuge verwenden, Entscheidungen treffen, Aufgaben sequentiell ausführen und proaktiv auf seine Umgebung reagieren.</p>
+<p><em>An autonomous agent doesn't just respond — it <strong>acts</strong>. Tools, decisions, sequences — and it can initiate without user input.</em></p>
+
+<h2>Chatbot vs. Agent</h2>
+<div class="two-col">
+  <div class="col-card purple">
+    <h3>❌ Klassischer Chatbot</h3>
+    <ul>
+      <li>Fragt → bekommt Antwort</li>
+      <li>Kein Gedächtnis zwischen Sessions</li>
+      <li>Kein Zugriff auf externe Systeme</li>
+      <li>Rein reaktiv, immer on-demand</li>
+    </ul>
   </div>
-
-  <div class="section-label">Grundlagen / Basics</div>
-
-  <p>Ein <strong>autonomer Agent</strong> ist ein KI-System, das nicht nur antwortet — es <em>handelt</em>. Es kann Werkzeuge verwenden, Entscheidungen treffen, Aufgaben sequentiell ausführen und proaktiv auf seine Umgebung reagieren.</p>
-  <p><em>An <strong>autonomous agent</strong> doesn't just respond — it <strong>acts</strong>. Tools, decisions, sequences — and it can initiate on its own.</em></p>
-
-  <h2>Chatbot vs. Agent</h2>
-  <div class="two-col">
-    <div class="col-card purple">
-      <h3>❌ Klassischer Chatbot</h3>
-      <ul>
-        <li>Fragt → bekommt Antwort</li>
-        <li>Kein Gedächtnis zwischen Sessions</li>
-        <li>Kein Zugriff auf externe Systeme</li>
-        <li>Rein reaktiv, immer on-demand</li>
-      </ul>
-    </div>
-    <div class="col-card blue">
-      <h3>✅ Autonomer Agent</h3>
-      <ul>
-        <li>Empfängt Ziel → plant → führt aus</li>
-        <li>Persistentes Gedächtnis (Dateien/SQLite)</li>
-        <li>Tools: Browser, Shell, APIs, Dateien</li>
-        <li>Proaktiv: arbeitet ohne User-Input</li>
-      </ul>
-    </div>
-  </div>
-
-  <h2>Die Agent-Schleife / The Agent Loop</h2>
-  <div class="flow">
-    <div class="flow-step">👁 Wahrnehmen<br><small>Perceive</small></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step">🧠 Denken<br><small>Reason</small></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step">🔧 Handeln<br><small>Act (Tools)</small></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step">💾 Merken<br><small>Remember</small></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step">🔄 Nächster Turn<br><small>Next cycle</small></div>
-  </div>
-
-  <h2>Werkzeuge / Tools (Beispiele)</h2>
-  <div class="skill-grid">
-    <div class="skill-card"><div class="skill-card-name">🌐 web_search / web_fetch</div>Internet-Recherche in Echtzeit</div>
-    <div class="skill-card"><div class="skill-card-name">💻 exec / shell</div>Befehle auf dem Host ausführen</div>
-    <div class="skill-card"><div class="skill-card-name">📁 read / write / edit</div>Dateisystem-Operationen</div>
-    <div class="skill-card"><div class="skill-card-name">🌍 browser</div>Echten Browser steuern (Playwright)</div>
-    <div class="skill-card"><div class="skill-card-name">💬 message</div>Telegram, Discord, Slack senden</div>
-    <div class="skill-card"><div class="skill-card-name">🧠 memory_search</div>Semantische Suche im Gedächtnis</div>
-  </div>
-
-  <h2>Memory-System</h2>
-  <p>Agenten sind von Natur aus zustandslos — <strong>Memory-Dateien sind das Persistenz-Layer</strong>:</p>
-  <ul>
-    <li><code>MEMORY.md</code> / <code>memory.sqlite</code> — Langzeit-Gedächtnis (kuratiert)</li>
-    <li><code>memory/YYYY-MM-DD.md</code> — Tagesnotizen, rohe Logs</li>
-    <li><code>SOUL.md</code> — Persönlichkeit &amp; Werte des Agenten</li>
-    <li><code>USER.md</code> — Kontext über den Menschen</li>
-    <li><code>HEARTBEAT.md</code> — Periodische Aufgaben-Checkliste</li>
-  </ul>
-
-  <div class="callout callout-info">
-    <strong>💡 Key Insight</strong>
-    Das LLM ist das Gehirn — die Tools sind die Hände — die Memory-Dateien sind das Langzeitgedächtnis. Erst zusammen entsteht echter Nutzen.
-  </div>
-
-  <div class="page-footer">
-    <span>Autonomous Agents Workshop</span>
-    <span>openclaw.ai · zeroclawlabs.ai</span>
+  <div class="col-card blue">
+    <h3>✅ Autonomer Agent</h3>
+    <ul>
+      <li>Empfängt Ziel → plant → führt aus</li>
+      <li>Persistentes Gedächtnis</li>
+      <li>Tools: Browser, Shell, APIs, Dateien</li>
+      <li>Proaktiv — arbeitet ohne User-Input</li>
+    </ul>
   </div>
 </div>
 
-<!-- ══════════════════ PAGE 3: OpenClaw vs ZeroClaw — RICHTIG ══════════════════ -->
-<div class="page">
-  <div class="page-header">
-    <div class="page-title">OpenClaw vs ZeroClaw</div>
-    <div class="page-number">02</div>
+<h2>Die Agent-Schleife / The Agent Loop</h2>
+<div class="flow">
+  <div class="flow-step">👁 Wahrnehmen<br><small>Perceive</small></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">🧠 Denken<br><small>Reason</small></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">🔧 Handeln<br><small>Act (Tools)</small></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">💾 Merken<br><small>Remember</small></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">🔄 Nächster Turn<br><small>Next cycle</small></div>
+</div>
+
+<h2>Werkzeuge / Tools</h2>
+<div class="skill-grid">
+  <div class="skill-card"><div class="skill-card-name">🌐 web_search / web_fetch</div>Internet-Recherche in Echtzeit</div>
+  <div class="skill-card"><div class="skill-card-name">💻 exec / shell</div>Befehle auf dem Host ausführen</div>
+  <div class="skill-card"><div class="skill-card-name">📁 read / write / edit</div>Dateisystem-Operationen</div>
+  <div class="skill-card"><div class="skill-card-name">🌍 browser</div>Echten Browser steuern (Playwright)</div>
+  <div class="skill-card"><div class="skill-card-name">💬 message</div>Telegram, Discord, Slack senden</div>
+  <div class="skill-card"><div class="skill-card-name">🧠 memory_search</div>Semantische Suche im Gedächtnis</div>
+</div>
+
+<h2>Memory-System</h2>
+<p>Agenten sind zustandslos — Memory-Dateien sind das Persistenz-Layer:</p>
+<ul>
+  <li><code>MEMORY.md</code> — Langzeit-Gedächtnis (kuratiert, semantisch durchsuchbar)</li>
+  <li><code>memory/YYYY-MM-DD.md</code> — Tagesnotizen, rohe Logs</li>
+  <li><code>SOUL.md</code> — Persönlichkeit &amp; Werte · <code>USER.md</code> — Kontext über den Menschen</li>
+  <li><code>HEARTBEAT.md</code> — Periodische Aufgaben-Checkliste</li>
+</ul>
+
+<div class="callout callout-info">
+  <strong>💡 Key Insight</strong>
+  LLM = Gehirn · Tools = Hände · Memory-Dateien = Langzeitgedächtnis. Erst zusammen entsteht echter Nutzen.
+</div>
+
+<div class="page-footer">
+  <span>Autonomous Agents Workshop</span>
+  <span>openclaw.ai · zeroclawlabs.ai</span>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     02 — OpenClaw vs ZeroClaw
+══════════════════════════════════════════════ -->
+<div class="section-header page-break">
+  <div class="section-title">OpenClaw vs ZeroClaw</div>
+  <div class="section-num">02</div>
+</div>
+<div class="section-label">Vergleich / Comparison</div>
+
+<p>Beide sind <strong>vollständige Agent-Runtimes</strong> — der Unterschied liegt nicht im Deployment-Ort, sondern im <strong>Technologie-Stack</strong>. Beide können lokal <em>und</em> in der Cloud laufen.</p>
+
+<div class="callout callout-warn">
+  <strong>⚠️ Wichtig / Important</strong>
+  OpenClaw läuft nicht nur in der Cloud, ZeroClaw nicht nur lokal. <strong>Beide können beides.</strong> Der Unterschied: Node.js vs. Rust, ClawHub vs. 65 Provider, Semantic Memory vs. SQLite.
+</div>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>🐾 OpenClaw (Node.js)</th>
+      <th>🦀 ZeroClaw (Rust)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Stack</strong></td><td>Node.js / TypeScript</td><td>Rust — 3MB Binary, kein Runtime nötig</td></tr>
+    <tr><td><strong>Deployment</strong></td><td class="check">✓ Lokal + Server + Cloud</td><td class="check">✓ Lokal + Server + Cloud + Android</td></tr>
+    <tr><td><strong>AI Provider</strong></td><td>~10 Provider (Anthropic, OpenAI, Ollama…)</td><td><strong>65 Provider</strong> — Ollama, LM Studio, vLLM, DeepSeek, xAI…</td></tr>
+    <tr><td><strong>Lokal (kein API Key)</strong></td><td class="check">✓ mit Ollama</td><td class="check">✓ Ollama / LM Studio / llama.cpp / vLLM</td></tr>
+    <tr><td><strong>Channels</strong></td><td>Telegram, Discord, Signal, WhatsApp, Slack, iMessage…</td><td>20+ inkl. Nostr, Matrix, IRC, DingTalk, Lark, Reddit, Bluesky</td></tr>
+    <tr><td><strong>Memory</strong></td><td>Markdown + semantische Suche (memory_search)</td><td>SQLite (auto-save) + Markdown</td></tr>
+    <tr><td><strong>Skills</strong></td><td>ClawHub Marketplace (npm install)</td><td>Built-in + manuell in ~/.zeroclaw/skills/</td></tr>
+    <tr><td><strong>Multi-Agent</strong></td><td class="check">✓ MQTT, Gateway, subagents, ACP</td><td class="check">✓ Daemon + WebSocket Gateway</td></tr>
+    <tr><td><strong>Hardware</strong></td><td>—</td><td class="check">✓ STM32, Raspberry Pi GPIO, USB peripherals</td></tr>
+    <tr><td><strong>Safety Controls</strong></td><td>Tool policies, approval flows</td><td>E-Stop, OTP, max actions/hour, cost/day limit</td></tr>
+    <tr><td><strong>Migration</strong></td><td>—</td><td class="check">✓ <code>zeroclaw migrate openclaw</code></td></tr>
+    <tr><td><strong>Footprint</strong></td><td>Node.js + npm</td><td>3MB Binary — kein Node, kein Python</td></tr>
+  </tbody>
+</table>
+
+<h2>Wann was? / Decision Guide</h2>
+<div class="two-col">
+  <div class="col-card purple">
+    <h3>🐾 OpenClaw wenn…</h3>
+    <ul>
+      <li>JS/TS-Ökosystem bevorzugt</li>
+      <li>ClawHub Skills nutzen/publizieren</li>
+      <li>Multi-Agent mit MQTT + Subagents</li>
+      <li>Deep Telegram/Discord integration</li>
+      <li>ACP Coding-Agent Workflows</li>
+    </ul>
   </div>
-
-  <div class="section-label">Vergleich / Comparison</div>
-
-  <p>Beide Plattformen sind <strong>vollständige Agent-Runtimes</strong> — der Unterschied liegt nicht darin <em>wo</em> sie laufen, sondern in der <strong>Architektur und dem Technologie-Stack</strong>. Beide können lokal <em>und</em> in der Cloud betrieben werden.</p>
-
-  <div class="callout callout-warning">
-    <strong>⚠️ Wichtiger Hinweis / Important Note</strong>
-    OpenClaw läuft nicht nur in der Cloud — auch ZeroClaw läuft nicht nur lokal. <strong>Beide können beides.</strong> Die Wahl hängt von Stack, Datenschutz-Anforderungen und Modell-Präferenz ab.
-  </div>
-
-  <table class="compare-table">
-    <thead>
-      <tr>
-        <th>Feature</th>
-        <th>🐾 OpenClaw <span style="font-weight:400;font-size:8pt">(Node.js)</span></th>
-        <th>🦀 ZeroClaw <span style="font-weight:400;font-size:8pt">(Rust)</span></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Stack</strong></td>
-        <td>Node.js / TypeScript</td>
-        <td>Rust — 3MB Binary, kein Runtime</td>
-      </tr>
-      <tr>
-        <td><strong>Deployment</strong></td>
-        <td class="check">✓ Lokal + Cloud + Server</td>
-        <td class="check">✓ Lokal + Cloud + Server + Android</td>
-      </tr>
-      <tr>
-        <td><strong>Provider</strong></td>
-        <td>~10 Provider (Anthropic, OpenAI, Ollama…)</td>
-        <td><strong>65 Provider</strong> inkl. Ollama, LM Studio, vLLM, DeepSeek…</td>
-      </tr>
-      <tr>
-        <td><strong>100% lokal möglich</strong></td>
-        <td class="check">✓ mit Ollama</td>
-        <td class="check">✓ mit Ollama/LM Studio/llama.cpp</td>
-      </tr>
-      <tr>
-        <td><strong>Channels</strong></td>
-        <td>Telegram, Discord, Signal, WhatsApp, Slack, iMessage…</td>
-        <td>20+ Channels inkl. Nostr, Matrix, IRC, DingTalk, Lark, Reddit, Bluesky</td>
-      </tr>
-      <tr>
-        <td><strong>Hardware-Support</strong></td>
-        <td>—</td>
-        <td class="check">✓ STM32, Raspberry Pi GPIO, USB peripherals</td>
-      </tr>
-      <tr>
-        <td><strong>Skills / Extensions</strong></td>
-        <td>ClawHub Marketplace (npm)</td>
-        <td>Built-in skill-creation Cargo feature</td>
-      </tr>
-      <tr>
-        <td><strong>Multi-Agent</strong></td>
-        <td class="check">✓ MQTT, Gateway, subagents</td>
-        <td class="check">✓ Daemon + WebSocket Gateway</td>
-      </tr>
-      <tr>
-        <td><strong>Memory</strong></td>
-        <td>Markdown-Dateien</td>
-        <td>SQLite (auto-save) + Markdown</td>
-      </tr>
-      <tr>
-        <td><strong>Migration</strong></td>
-        <td>—</td>
-        <td class="check">✓ <code>zeroclaw migrate openclaw</code></td>
-      </tr>
-      <tr>
-        <td><strong>Autonomy Control</strong></td>
-        <td>Tool policies, approval flows</td>
-        <td>E-Stop, OTP, max actions/hour, cost/day limit</td>
-      </tr>
-      <tr>
-        <td><strong>Resource footprint</strong></td>
-        <td>Node.js + npm packages</td>
-        <td>3MB Binary, kein Node, kein Python</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h2>Wann was? / Decision Guide</h2>
-  <div class="two-col">
-    <div class="col-card purple">
-      <h3>🐾 Nimm OpenClaw wenn…</h3>
-      <ul>
-        <li>Du im JS/TS-Ökosystem bleiben willst</li>
-        <li>ClawHub Skills nutzen/publizieren willst</li>
-        <li>Multi-Agent mit MQTT + Subagents</li>
-        <li>Deep Telegram/Discord integration</li>
-        <li>ACP Coding-Agent Workflows</li>
-      </ul>
-    </div>
-    <div class="col-card blue">
-      <h3>🦀 Nimm ZeroClaw wenn…</h3>
-      <ul>
-        <li>Minimaler Footprint wichtig ist</li>
-        <li>Hardware steuern (GPIO, STM32)</li>
-        <li>Maximale Provider-Auswahl (65)</li>
-        <li>Niche Channels (Nostr, Matrix, IRC…)</li>
-        <li>Migration von OpenClaw geplant</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="page-footer">
-    <span>Autonomous Agents Workshop</span>
-    <span>openclaw.ai · zeroclawlabs.ai</span>
+  <div class="col-card blue">
+    <h3>🦀 ZeroClaw wenn…</h3>
+    <ul>
+      <li>Minimaler Footprint wichtig</li>
+      <li>Hardware steuern (GPIO, STM32)</li>
+      <li>Maximale Provider-Auswahl (65)</li>
+      <li>Niche Channels (Nostr, Matrix, IRC…)</li>
+      <li>Migration von OpenClaw geplant</li>
+    </ul>
   </div>
 </div>
 
-<!-- ══════════════════ PAGE 4: ZeroClaw Deep Dive ══════════════════ -->
-<div class="page">
-  <div class="page-header">
-    <div class="page-title">ZeroClaw — Deep Dive</div>
-    <div class="page-number">03</div>
-  </div>
+<div class="page-footer">
+  <span>Autonomous Agents Workshop</span>
+  <span>openclaw.ai · zeroclawlabs.ai</span>
+</div>
 
-  <div class="section-label">ZeroClaw Features</div>
+<!-- ══════════════════════════════════════════════
+     03 — ZeroClaw Deep Dive
+══════════════════════════════════════════════ -->
+<div class="section-header page-break">
+  <div class="section-title">ZeroClaw — Deep Dive</div>
+  <div class="section-num">03</div>
+</div>
+<div class="section-label">ZeroClaw Features</div>
 
-  <h2>Installation (eine Zeile)</h2>
-<pre># Interaktiv (recommended)
+<h2>Installation (eine Zeile)</h2>
+<pre># Interaktiv — guided setup
 curl -fsSL https://zeroclawlabs.ai/install.sh | bash
 
 # Non-interaktiv mit Ollama (kein API Key!)
@@ -629,243 +523,209 @@ curl -fsSL https://zeroclawlabs.ai/install.sh | bash
 # Non-interaktiv mit Anthropic
 ./install.sh --api-key "sk-ant-..." --provider anthropic</pre>
 
-  <h2>65 Provider — Auswahl</h2>
-  <div class="three-col">
-    <div class="mini-card">
-      <div class="mini-card-title">☁️ Cloud</div>
-      OpenRouter · Anthropic · OpenAI · Gemini · Groq · Mistral · DeepSeek · xAI · Bedrock · Cohere · Perplexity + 40 weitere
-    </div>
-    <div class="mini-card">
-      <div class="mini-card-title">🖥 Lokal (kein API Key)</div>
-      Ollama · LM Studio · llama.cpp · vLLM · SGLang · Claude Code CLI · Gemini CLI · Osaurus
-    </div>
-    <div class="mini-card">
-      <div class="mini-card-title">🔧 Custom</div>
-      <code>custom:&lt;URL&gt;</code><br>
-      Jeder OpenAI-kompatible Endpoint<br><br>
-      <code>anthropic-custom:&lt;URL&gt;</code><br>
-      Jeder Anthropic-kompatibler Endpoint
-    </div>
+<h2>65 Provider</h2>
+<div class="three-col">
+  <div class="mini-card">
+    <div class="mini-card-title">☁️ Cloud (API Key)</div>
+    OpenRouter · Anthropic · OpenAI · Gemini · Groq · Mistral · DeepSeek · xAI · Bedrock · Cohere · Perplexity + 40 weitere
   </div>
+  <div class="mini-card">
+    <div class="mini-card-title">🖥 Lokal (kein Key)</div>
+    Ollama · LM Studio · llama.cpp · vLLM · SGLang · Claude Code CLI · Gemini CLI · Osaurus
+  </div>
+  <div class="mini-card">
+    <div class="mini-card-title">🔧 Custom Endpoints</div>
+    <code>custom:&lt;URL&gt;</code> — OpenAI-kompatibel<br><br>
+    <code>anthropic-custom:&lt;URL&gt;</code> — Anthropic-kompatibel
+  </div>
+</div>
 
-  <h2>Config (<code>~/.zeroclaw/config.toml</code>)</h2>
-<pre># Lokal — komplett offline, kein API Key
+<h2>Config (<code>~/.zeroclaw/config.toml</code>)</h2>
+<pre># Lokal — komplett offline
 default_provider = "ollama"
 default_model    = "qwen3:8b"
 
 # Cloud — maximale Power
 default_provider = "anthropic"
 api_key          = "sk-ant-..."
-default_model    = "claude-opus-4"
+default_model    = "claude-opus-4"</pre>
 
-# Server-Deploy — VPS mit Ollama
-default_provider  = "ollama"
-gateway_port      = 18789
-gateway_host      = "0.0.0.0"</pre>
-
-  <h2>Daemon (Always-On auf Server/Laptop)</h2>
-<pre># Als Daemon starten (Gateway + Channels + Heartbeat)
-zeroclaw daemon
-
-# Als systemd User Service registrieren
-zeroclaw service install
-
-# Status prüfen
+<h2>Daemon + Safety</h2>
+<div class="two-col">
+  <div class="col-card purple">
+    <h3>🚀 Always-On Daemon</h3>
+    <pre style="margin:4px 0">zeroclaw daemon
+zeroclaw service install  # systemd
 zeroclaw status
 zeroclaw doctor</pre>
-
-  <h2>Autonomy &amp; Sicherheit</h2>
-  <div class="two-col">
-    <div class="col-card purple">
-      <h3>🛡 Safety Controls</h3>
-      <ul>
-        <li><strong>E-Stop</strong> — Notfall-Stopp (sofort)</li>
-        <li><strong>OTP</strong> — Einmal-Passwort für sensitive Actions</li>
-        <li><strong>max_actions_per_hour</strong> — Rate limit</li>
-        <li><strong>max_cost_per_day</strong> — Budget limit ($)</li>
-        <li><strong>allowed_commands</strong> — Shell-Whitelist</li>
-        <li><strong>workspace_only</strong> — Dateisystem-Sandbox</li>
-      </ul>
-    </div>
-    <div class="col-card blue">
-      <h3>🔩 Hardware (einzigartig!)</h3>
-      <ul>
-        <li>USB device discovery</li>
-        <li>STM32 microcontroller support</li>
-        <li>Raspberry Pi GPIO control</li>
-        <li><code>zeroclaw hardware</code> — scan</li>
-        <li><code>zeroclaw peripheral</code> — manage</li>
-        <li>IoT / embedded agents möglich</li>
-      </ul>
-    </div>
+    <p style="font-size:8.5pt;margin-top:6px">Gateway + Channels + Heartbeat + Scheduler — alles in einem Prozess</p>
   </div>
-
-  <h2>Migration von OpenClaw</h2>
-<pre># OpenClaw-Workspace in ZeroClaw importieren
-zeroclaw migrate openclaw
-
-# Memory aus openclaw.json importieren
-# Alle .md Dateien werden übernommen</pre>
-
-  <div class="callout callout-tip">
-    <strong>✨ Echtzeit-Demo heute</strong>
-    ZeroClaw läuft auf diesem Server mit Ollama/qwen3:8b — komplett lokal, kein API Key. Getestet: <code>zeroclaw agent -m "Hello"</code> → antwortet in ~1s.
-  </div>
-
-  <div class="page-footer">
-    <span>Autonomous Agents Workshop</span>
-    <span>openclaw.ai · zeroclawlabs.ai</span>
+  <div class="col-card blue">
+    <h3>🛡 Safety Controls</h3>
+    <ul>
+      <li><strong>E-Stop</strong> — Notfall-Stopp</li>
+      <li><strong>OTP</strong> — Einmal-Passwort</li>
+      <li><strong>max_actions_per_hour</strong></li>
+      <li><strong>max_cost_per_day</strong> ($)</li>
+      <li><strong>allowed_commands</strong> — Whitelist</li>
+      <li><strong>workspace_only</strong> — Sandbox</li>
+    </ul>
   </div>
 </div>
 
-<!-- ══════════════════ PAGE 5: Skills & Multi-Agent ══════════════════ -->
-<div class="page">
-  <div class="page-header">
-    <div class="page-title">Skills &amp; Multi-Agent-Setups</div>
-    <div class="page-number">04</div>
-  </div>
+<h2>Hardware — einzigartig</h2>
+<div class="callout callout-tip">
+  <strong>🔩 OpenClaw hat kein Hardware-Support — ZeroClaw schon</strong>
+  STM32 Microcontroller · Raspberry Pi GPIO · USB device discovery<br>
+  <code>zeroclaw hardware</code> — scan · <code>zeroclaw peripheral</code> — manage<br>
+  → IoT-Agents, embedded control, physische Welt steuerbar
+</div>
 
-  <div class="section-label">Skills / Multi-Agent</div>
+<h2>Migration von OpenClaw</h2>
+<pre>zeroclaw migrate openclaw
+# Importiert MEMORY.md, SOUL.md, USER.md und alle .md Dateien</pre>
 
-  <h2>Skills — Modulare Erweiterungen</h2>
-  <p>Skills sind Ordner mit einer <code>SKILL.md</code> — sie erklären dem Agenten neue Fähigkeiten. Kein Code-Deploy, nur Text.</p>
+<div class="callout callout-info">
+  <strong>✨ Live Demo heute</strong>
+  ZeroClaw v0.5.6 läuft auf diesem Server mit Ollama/qwen3:8b — komplett lokal, kein API Key. <code>zeroclaw agent -m "Hello"</code> → antwortet in ~1s.
+</div>
 
+<div class="page-footer">
+  <span>Autonomous Agents Workshop</span>
+  <span>openclaw.ai · zeroclawlabs.ai</span>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     04 — Skills & Multi-Agent
+══════════════════════════════════════════════ -->
+<div class="section-header page-break">
+  <div class="section-title">Skills &amp; Multi-Agent-Setups</div>
+  <div class="section-num">04</div>
+</div>
+<div class="section-label">Skills / Multi-Agent</div>
+
+<h2>Skills — Modulare Erweiterungen</h2>
+<p>Skills sind Ordner mit einer <code>SKILL.md</code> — kein Code-Deploy, nur Text-Instruktionen für den Agenten.</p>
 <pre>my-skill/
-├── SKILL.md          # Trigger-Bedingungen + Anleitung für den Agenten
+├── SKILL.md          # Trigger-Bedingungen + Anleitung
 ├── references/       # API-Specs, Docs
 └── scripts/          # Hilfs-Skripte</pre>
+<p><strong>OpenClaw:</strong> <code>npx clawhub install weather</code> · <strong>ZeroClaw:</strong> <code>zeroclaw skills install</code></p>
 
-  <p><strong>OpenClaw:</strong> <code>npx clawhub install weather</code> — aus dem ClawHub Marketplace<br>
-  <strong>ZeroClaw:</strong> <code>zeroclaw skills install</code> / manuell in <code>~/.zeroclaw/skills/</code></p>
+<div class="skill-grid">
+  <div class="skill-card"><div class="skill-card-name">🌤 weather</div>Wetter via wttr.in / Open-Meteo</div>
+  <div class="skill-card"><div class="skill-card-name">📝 notion</div>Notion Pages, DBs, Blocks</div>
+  <div class="skill-card"><div class="skill-card-name">💻 coding-agent</div>Claude Code / Codex als Subagent</div>
+  <div class="skill-card"><div class="skill-card-name">🎤 whisper-api</div>Audio-Transkription</div>
+</div>
 
-  <div class="skill-grid">
-    <div class="skill-card"><div class="skill-card-name">🌤 weather</div>Wetter via wttr.in / Open-Meteo (kein Key)</div>
-    <div class="skill-card"><div class="skill-card-name">📝 notion</div>Notion Pages, Datenbanken, Blocks</div>
-    <div class="skill-card"><div class="skill-card-name">💻 coding-agent</div>Codex / Claude Code als Subagent</div>
-    <div class="skill-card"><div class="skill-card-name">🎤 whisper-api</div>Audio-Transkription via OpenAI</div>
+<h2>Multi-Agent — Kommunikation</h2>
+<div class="two-col">
+  <div class="col-card purple">
+    <h3>📡 MQTT (OpenClaw)</h3>
+    <ul>
+      <li>Broker: Mosquitto (Podman/Docker)</li>
+      <li>Topics: <code>hive/agent/inbox</code></li>
+      <li>Push-basiert, event-driven</li>
+      <li>Agents auf verschiedenen Maschinen</li>
+      <li>Chat-Inject in laufende Session</li>
+    </ul>
   </div>
-
-  <h2>Multi-Agent — Kommunikationsarchitektur</h2>
-
-  <div class="two-col">
-    <div class="col-card purple">
-      <h3>📡 MQTT (OpenClaw)</h3>
-      <ul>
-        <li>Broker: Mosquitto (Podman)</li>
-        <li>Topics: <code>hive/agent/inbox</code></li>
-        <li>Push-basiert, event-driven</li>
-        <li>Agents auf verschiedenen Maschinen</li>
-        <li>Chat-Inject in laufende Session</li>
-      </ul>
-    </div>
-    <div class="col-card blue">
-      <h3>🔗 Gateway/WebSocket (ZeroClaw)</h3>
-      <ul>
-        <li>Daemon öffnet HTTP + WS Server</li>
-        <li><code>ws://host:18789/ws/chat</code></li>
-        <li>Subagents via <code>sessions_spawn()</code></li>
-        <li>ACP-Protokoll für Coding-Agents</li>
-        <li>REST API für externe Trigger</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="highlight-box">
-    <h3>🐉 Reales Setup: Draco (OpenClaw) + ZeroClaw Demo (heute)</h3>
-    <p>Draco läuft als OpenClaw auf diesem Server (dr460nd3n, 24/7). ZeroClaw läuft parallel auf demselben Server mit Ollama. Beide können über MQTT oder HTTP kommunizieren.</p>
-<pre>Draco (OpenClaw, Port 18789)  ←──→  ZeroClaw (Port 3000)
-        ↕ MQTT: hive/draco/inbox         ↕ ws://localhost:3000/ws/chat
-   Telegram / Discord / Signal       Nostr / Matrix / IRC / Bluesky</pre>
-  </div>
-
-  <h2>Design-Prinzipien für Multi-Agent</h2>
-  <ul>
-    <li><strong>Separation of concerns:</strong> Jeder Agent hat eine klare Rolle</li>
-    <li><strong>Skepticism:</strong> Agents sollen sich gegenseitig nicht blind vertrauen</li>
-    <li><strong>Async by default:</strong> Push-Kommunikation statt Polling</li>
-    <li><strong>Memory isolation:</strong> Private Daten bleiben beim Owner-Agent</li>
-    <li><strong>Human-in-the-loop:</strong> Für destructive Actions immer Bestätigung</li>
-  </ul>
-
-  <div class="page-footer">
-    <span>Autonomous Agents Workshop</span>
-    <span>openclaw.ai · zeroclawlabs.ai</span>
+  <div class="col-card blue">
+    <h3>🔗 WebSocket Gateway (ZeroClaw)</h3>
+    <ul>
+      <li>Daemon öffnet HTTP + WS Server</li>
+      <li><code>ws://host:port/ws/chat</code></li>
+      <li>REST API für externe Trigger</li>
+      <li>Subagents via sessions_spawn()</li>
+      <li>ACP-Protokoll für Coding-Agents</li>
+    </ul>
   </div>
 </div>
 
-<!-- ══════════════════ PAGE 6: Quickstart & Ressourcen ══════════════════ -->
-<div class="page">
-  <div class="page-header">
-    <div class="page-title">Quickstart &amp; Ressourcen</div>
-    <div class="page-number">05</div>
-  </div>
+<div class="highlight-box">
+  <h3>🐉 Reales Setup: Draco (OpenClaw) + ZeroClaw (heute)</h3>
+  <p>Draco läuft als OpenClaw 24/7 auf diesem Server. ZeroClaw läuft parallel mit Ollama lokal. Beide können über MQTT oder HTTP kommunizieren — unterschiedliche Channels, ein Netzwerk.</p>
+  <pre>Draco (OpenClaw)  ←── MQTT ──→  ZeroClaw Demo
+  Telegram/Discord/Signal         Nostr/Matrix/IRC/Bluesky</pre>
+</div>
 
-  <div class="section-label">Setup / Resources</div>
+<h2>Design-Prinzipien</h2>
+<ul>
+  <li><strong>Separation of concerns</strong> — Jeder Agent hat eine klare Rolle</li>
+  <li><strong>Skepticism</strong> — Agents vertrauen sich gegenseitig nicht blind</li>
+  <li><strong>Async by default</strong> — Push statt Polling</li>
+  <li><strong>Human-in-the-loop</strong> — Für destructive Actions immer Bestätigung</li>
+</ul>
 
-  <div class="two-col">
-    <div>
-      <h2>🐾 OpenClaw in 3 Schritten</h2>
-<pre>npm install -g openclaw
+<div class="page-footer">
+  <span>Autonomous Agents Workshop</span>
+  <span>openclaw.ai · zeroclawlabs.ai</span>
+</div>
 
+<!-- ══════════════════════════════════════════════
+     05 — Quickstart & Ressourcen
+══════════════════════════════════════════════ -->
+<div class="section-header page-break">
+  <div class="section-title">Quickstart &amp; Ressourcen</div>
+  <div class="section-num">05</div>
+</div>
+<div class="section-label">Setup / Resources</div>
+
+<div class="two-col">
+  <div>
+    <h2>🐾 OpenClaw</h2>
+    <pre>npm install -g openclaw
 openclaw configure
-# → Provider, API Key, Channels
-
 openclaw gateway start
 openclaw status</pre>
-      <div class="callout callout-info" style="margin-top:8px">
-        <strong>Voraussetzungen</strong>
-        Node.js ≥ 18, API Key (z.B. Anthropic), optional: Telegram Bot Token
-      </div>
-    </div>
-    <div>
-      <h2>🦀 ZeroClaw in 1 Schritt</h2>
-<pre>curl -fsSL \
-  https://zeroclawlabs.ai/install.sh \
-  | bash
-
-# Lokal ohne API Key:
-zeroclaw onboard --provider ollama
-
-zeroclaw daemon
-zeroclaw status</pre>
-      <div class="callout callout-tip" style="margin-top:8px">
-        <strong>Voraussetzungen</strong>
-        Nichts (Rust wird mitinstalliert). Für lokale Modelle: Ollama.
-      </div>
+    <div class="callout callout-info" style="margin-top:7px">
+      <strong>Voraussetzungen</strong>
+      Node.js ≥ 18 · API Key · optional: Telegram Bot Token
     </div>
   </div>
+  <div>
+    <h2>🦀 ZeroClaw</h2>
+    <pre>curl -fsSL \
+  https://zeroclawlabs.ai/install.sh \
+  | bash
+zeroclaw daemon
+zeroclaw status</pre>
+    <div class="callout callout-tip" style="margin-top:7px">
+      <strong>Voraussetzungen</strong>
+      Nichts (Rust wird mitinstalliert). Für lokal: Ollama.
+    </div>
+  </div>
+</div>
 
-  <h2>Workspace-Struktur (beide Plattformen)</h2>
+<h2>Workspace-Struktur (beide Plattformen)</h2>
 <pre>~/.openclaw/workspace/    OR    ~/.zeroclaw/workspace/
 ├── SOUL.md        # Persönlichkeit des Agenten
 ├── USER.md        # Kontext über den Menschen
-├── MEMORY.md      # Langzeitgedächtnis (kuratiert)
-├── AGENTS.md      # Workspace-Konventionen
+├── MEMORY.md      # Langzeitgedächtnis (semantisch durchsuchbar)
 ├── HEARTBEAT.md   # Periodische Aufgaben-Checkliste
-├── TOOLS.md       # Umgebungs-spezifische Notizen (SSH, Cameras…)
-└── memory/
-    └── YYYY-MM-DD.md   # Tages-Logs</pre>
+├── AGENTS.md      # Workspace-Konventionen
+└── memory/YYYY-MM-DD.md   # Tages-Logs</pre>
 
-  <h2>Ressourcen / Resources</h2>
-  <div class="links-grid">
-    <div class="link-item"><div class="link-label">OpenClaw Docs</div><div class="url">docs.openclaw.ai</div></div>
-    <div class="link-item"><div class="link-label">ZeroClaw</div><div class="url">zeroclawlabs.ai</div></div>
-    <div class="link-item"><div class="link-label">Skill Registry</div><div class="url">clawhub.com</div></div>
-    <div class="link-item"><div class="link-label">Community Discord</div><div class="url">discord.com/invite/clawd</div></div>
-    <div class="link-item"><div class="link-label">Workshop Repo</div><div class="url">github.com/execute008/<br>autonomous-agents-workshop</div></div>
-    <div class="link-item"><div class="link-label">ZeroClaw npm</div><div class="url">npmjs.com/package/zeroclaw</div></div>
-  </div>
+<h2>Ressourcen</h2>
+<div class="links-grid">
+  <div class="link-item"><div class="link-label">OpenClaw Docs</div><div class="url">docs.openclaw.ai</div></div>
+  <div class="link-item"><div class="link-label">ZeroClaw</div><div class="url">zeroclawlabs.ai</div></div>
+  <div class="link-item"><div class="link-label">Skill Registry</div><div class="url">clawhub.com</div></div>
+  <div class="link-item"><div class="link-label">Community Discord</div><div class="url">discord.com/invite/clawd</div></div>
+  <div class="link-item"><div class="link-label">Workshop Repo</div><div class="url">github.com/execute008/<br>autonomous-agents-workshop</div></div>
+  <div class="link-item"><div class="link-label">ZeroClaw npm</div><div class="url">npmjs.com/package/zeroclaw</div></div>
+</div>
 
-  <div class="highlight-box" style="margin-top:14px">
-    <h3>🚀 Take-Away</h3>
-    <p><strong>OpenClaw und ZeroClaw lösen dasselbe Problem auf zwei Arten.</strong> OpenClaw ist das JS-Ökosystem mit ClawHub und ACP. ZeroClaw ist das Rust-Binary mit 65 Providern und Hardware-Support. Beide können lokal <em>und</em> in der Cloud laufen, beide unterstützen Ollama für komplette Datenprivacy.</p>
-    <p style="margin-top:8px"><em>The real shift: you give the LLM hands, memory, and a persistent identity. That's when it stops being a chatbot and starts being an agent.</em></p>
-  </div>
+<div class="highlight-box">
+  <h3>🚀 Take-Away</h3>
+  <p><strong>OpenClaw und ZeroClaw lösen dasselbe Problem auf zwei Arten.</strong> Node.js mit ClawHub und ACP vs. Rust mit 65 Providern und Hardware-Support. Beide lokal oder Cloud. Beide mit Ollama für komplette Datenprivacy.</p>
+  <p style="margin-top:6px"><em>The real shift: you give the LLM hands, memory, and a persistent identity. That's when it stops being a chatbot and starts being an agent.</em></p>
+</div>
 
-  <div class="page-footer">
-    <span>Autonomous Agents Workshop · Oskar · execute008</span>
-    <span>2026 · openclaw.ai · zeroclawlabs.ai</span>
-  </div>
+<div class="page-footer">
+  <span>Autonomous Agents Workshop · Oskar · execute008</span>
+  <span>2026 · openclaw.ai · zeroclawlabs.ai</span>
 </div>
 
 </body>
