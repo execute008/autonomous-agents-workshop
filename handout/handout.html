@@ -17,9 +17,13 @@
     background: white;
   }
 
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
   .page {
     width: 210mm;
-    min-height: 297mm;
     margin: 0 auto;
     padding: 18mm 18mm 20mm 18mm;
     page-break-after: always;
@@ -29,7 +33,41 @@
 
   @media print {
     body { background: white; }
-    .page { margin: 0; }
+    .page { margin: 0; box-shadow: none; }
+  }
+
+  /* ── Prevent mid-element page breaks ── */
+  .two-col,
+  .three-col,
+  .skill-grid,
+  .col-card,
+  .mini-card,
+  .callout,
+  .highlight-box,
+  .link-item,
+  .links-grid,
+  .skill-card,
+  .product-card,
+  .flow,
+  pre {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h2 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Keep table rows together */
+  .compare-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   /* COVER */
@@ -37,7 +75,7 @@
     background: linear-gradient(135deg, #0d0d1a 0%, #1a0a2e 40%, #0a1628 100%);
     color: white;
     padding: 28mm 18mm 20mm;
-    min-height: 297mm;
+    height: 297mm;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -319,16 +357,13 @@
 
   /* FOOTER */
   .page-footer {
-    position: absolute;
-    bottom: 10mm;
-    left: 18mm;
-    right: 18mm;
     display: flex;
     justify-content: space-between;
     font-size: 7.5pt;
     color: #94a3b8;
     border-top: 1px solid #e5e7eb;
-    padding-top: 5px;
+    padding-top: 6px;
+    margin-top: 18px;
   }
 
   /* THREE COL */
