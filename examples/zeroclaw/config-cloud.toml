@@ -1,0 +1,16 @@
+# ZeroClaw — Cloud / Max power setup
+# Running on a VPS with Anthropic Claude
+
+default_provider = "anthropic"
+api_key          = "sk-ant-..."   # or set via ZEROCLAW_API_KEY env var
+default_model    = "claude-sonnet-4"
+
+gateway_host = "0.0.0.0"
+gateway_port = 3000
+
+[autonomy]
+supervised           = true
+max_actions_per_hour = 60
+max_cost_per_day     = 5.00   # USD — hard budget cap
+workspace_only       = true
+otp_enabled          = false  # set true for sensitive environments

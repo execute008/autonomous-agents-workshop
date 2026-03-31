@@ -1,0 +1,11 @@
+# ZeroClaw — Local / Privacy-first setup
+# No data leaves the machine. No API key required.
+
+default_provider = "ollama"
+default_model    = "qwen3:8b"   # or llama3, mistral, etc.
+
+[autonomy]
+supervised         = true
+max_actions_per_hour = 30
+workspace_only     = true
+allowed_commands   = ["git", "ls", "cat", "grep", "find", "echo", "pwd", "wc", "head", "tail", "npm", "cargo"]
